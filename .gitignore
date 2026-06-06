@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Database locks and job status logs
+/data/jobs/
+/data/*.lock
+
+# Local scratch files
+/scratch/
