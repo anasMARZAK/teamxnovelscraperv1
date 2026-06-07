@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import puppeteer from 'puppeteer-extra';
+import { addExtra } from 'puppeteer-extra';
+import puppeteerVanilla from 'puppeteer';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
+const puppeteer = addExtra(puppeteerVanilla);
+
 // Register StealthPlugin globally if it hasn't been registered yet
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 if (!(puppeteer as any).customQueryHandlers) {
   try {
     puppeteer.use(StealthPlugin());
@@ -52,43 +56,30 @@ export async function GET(req: NextRequest) {
       }
     });
 
-    // Query olympustaff WordPress search
-    const searchUrl = `https://olympustaff.com/?s=${encodeURIComponent(query)}`;
+    // Query olympustaff AJAX search endpoint
+    const searchUrl = `https://olympustaff.com/ajax/search?keyword=${encodeURIComponent(query)}`;
     await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
     
-    // Give time for dynamic scripts to load
-    await new Promise(r => setTimeout(r, 2500));
+    // Give time to load
+    await new Promise(r => setTimeout(r, 1000));
 
     // Extract search cards using DOM selectors
     const results = await page.evaluate(() => {
       const cards: Array<{ title: string; href: string; imgUrl: string }> = [];
-      const titles = document.querySelectorAll('.entry-title');
+      const anchors = document.querySelectorAll('a');
       
-      titles.forEach(titleEl => {
-        const titleText = titleEl.textContent?.trim() || '';
-        const linkEl = titleEl.querySelector('a');
-        const href = linkEl ? linkEl.href : '';
-        
-        // Traverse up to find the common card container enclosing the thumbnail image
-        let parent = titleEl.parentElement;
-        let imgUrl = '';
-        
-        for (let i = 0; i < 4; i++) {
-          if (!parent) break;
-          const img = parent.querySelector('img');
-          if (img) {
-            imgUrl = img.src || img.getAttribute('data-src') || img.getAttribute('srcset') || '';
-            break;
-          }
-          parent = parent.parentElement;
-        }
+      anchors.forEach(a => {
+        const href = a.href || '';
+        const imgEl = a.querySelector('img');
+        const imgUrl = imgEl ? (imgEl.src || imgEl.getAttribute('data-src') || '') : '';
+        const titleEl = a.querySelector('h4');
+        const title = titleEl ? titleEl.textContent.trim() : (imgEl ? imgEl.alt.trim() : '');
         
         // Ensure it is a valid series link (not an individual chapter post)
-        // individual chapters have paths like /series/manga/chapter_num
         const isSeries = href.includes('/series/') && href.split('/series/')[1]?.split('/').filter(Boolean).length === 1;
 
-        if (isSeries && titleText.length > 0) {
-          cards.push({ title: titleText, href, imgUrl });
+        if (isSeries && title) {
+          cards.push({ title, href, imgUrl });
         }
       });
       return cards;
