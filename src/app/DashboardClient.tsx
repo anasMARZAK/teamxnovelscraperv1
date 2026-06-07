@@ -58,6 +58,19 @@ export default function DashboardClient({ initialCatalog }: DashboardClientProps
 
   const terminalRef = useRef<HTMLDivElement>(null);
 
+  // Restore active job from localStorage on mount
+  useEffect(() => {
+    const storedJobId = localStorage.getItem('activeJobId');
+    if (storedJobId) {
+      setTimeout(() => {
+        setActiveJobId(storedJobId);
+        const storedShowHud = localStorage.getItem('showHud');
+        setShowHud(storedShowHud !== 'false'); // default to true if not explicitly minimized
+        setIsScraping(true);
+      }, 0);
+    }
+  }, []);
+
   const showToast = useCallback((message: string, type: 'success' | 'info' | 'error') => {
     setToast({ message, type });
     const delay = type === 'info' ? 3000 : 5000;
@@ -89,6 +102,8 @@ export default function DashboardClient({ initialCatalog }: DashboardClientProps
           if (data.status === 'completed' || data.status === 'failed') {
             setIsScraping(false);
             if (interval) clearInterval(interval);
+            localStorage.removeItem('activeJobId');
+            localStorage.removeItem('showHud');
 
             if (data.status === 'completed') {
               showToast('Scraping completed! Refreshing catalog...', 'success');
@@ -99,6 +114,8 @@ export default function DashboardClient({ initialCatalog }: DashboardClientProps
             } else {
               showToast('Scraping failed. Check the console for details.', 'error');
             }
+          } else if (data.status === 'running') {
+            setIsScraping(true);
           }
         }
       } catch { /* ignore */ }
@@ -129,6 +146,8 @@ export default function DashboardClient({ initialCatalog }: DashboardClientProps
         setActiveJobId(data.seriesId);
         setShowHud(true);
         setJobStatus(null);
+        localStorage.setItem('activeJobId', data.seriesId);
+        localStorage.setItem('showHud', 'true');
       } else {
         showToast(data.error || 'Failed to start scraping.', 'error');
         setIsScraping(false);
@@ -180,7 +199,10 @@ export default function DashboardClient({ initialCatalog }: DashboardClientProps
                 {jobStatus?.status === 'running' && (
                   <button 
                     className="btn btn-secondary" 
-                    onClick={() => setShowHud(false)}
+                    onClick={() => {
+                      setShowHud(false);
+                      localStorage.setItem('showHud', 'false');
+                    }}
                     style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', borderRadius: '6px', cursor: 'pointer' }}
                   >
                     Minimize
@@ -190,9 +212,12 @@ export default function DashboardClient({ initialCatalog }: DashboardClientProps
                   className="hud-close-btn" 
                   onClick={() => {
                     setShowHud(false);
+                    localStorage.setItem('showHud', 'false');
                     if (!jobStatus || jobStatus.status === 'completed' || jobStatus.status === 'failed') {
                       setActiveJobId(null);
                       setJobStatus(null);
+                      localStorage.removeItem('activeJobId');
+                      localStorage.removeItem('showHud');
                     }
                   }}
                   title={jobStatus?.status === 'running' ? "Minimize to background" : "Close console"}
@@ -467,7 +492,10 @@ export default function DashboardClient({ initialCatalog }: DashboardClientProps
       {activeJobId && !showHud && (
         <button 
           className="floating-hud-trigger glass" 
-          onClick={() => setShowHud(true)}
+          onClick={() => {
+            setShowHud(true);
+            localStorage.setItem('showHud', 'true');
+          }}
           style={{
             position: 'fixed',
             bottom: '2rem',
