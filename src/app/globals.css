@@ -228,6 +228,13 @@ html, body {
   gap: 2rem;
 }
 
+.manga-grid > a {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+}
+
 .manga-card {
   background-color: var(--surface);
   border-radius: 12px;
@@ -239,6 +246,8 @@ html, body {
   flex-direction: column;
   position: relative;
   box-shadow: var(--shadow);
+  height: 100%;
+  flex-grow: 1;
 }
 
 .manga-card:hover {
