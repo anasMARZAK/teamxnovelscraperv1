@@ -405,10 +405,25 @@ export default function Reader({ seriesId, chapterId, chapterTitle, images, chap
               <button 
                 onClick={() => setIsAutoScrolling(!isAutoScrolling)} 
                 className={`reader-btn ${isAutoScrolling ? 'active' : ''}`}
-                style={{ width: 'auto', padding: '0 0.75rem', fontSize: '0.85rem', fontWeight: 600, borderColor: 'var(--border)' }}
+                style={{ width: 'auto', padding: '0 0.75rem', fontSize: '0.85rem', fontWeight: 600, borderColor: 'var(--border)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
                 title="Spacebar to toggle auto scroll"
               >
-                {isAutoScrolling ? '⏸ Pause' : '▶ Auto Scroll'}
+                {isAutoScrolling ? (
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '12px', height: '12px' }}>
+                      <rect x="6" y="4" width="4" height="16"></rect>
+                      <rect x="14" y="4" width="4" height="16"></rect>
+                    </svg>
+                    Pause
+                  </span>
+                ) : (
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '12px', height: '12px' }}>
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Auto Scroll
+                  </span>
+                )}
               </button>
               {isAutoScrolling && (
                 <button 
@@ -448,12 +463,40 @@ export default function Reader({ seriesId, chapterId, chapterTitle, images, chap
             onClick={cycleTheme} 
             className="reader-btn" 
             title={`Cycle theme: Current ${readerTheme}`}
-            style={{ fontSize: '1rem', borderColor: 'var(--border)' }}
+            style={{ fontSize: '1rem', borderColor: 'var(--border)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
           >
-            {readerTheme === 'dark' && '🌙'}
-            {readerTheme === 'amoled' && '🌑'}
-            {readerTheme === 'sepia' && '📜'}
-            {readerTheme === 'light' && '☀️'}
+            {readerTheme === 'dark' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px' }}>
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            )}
+            {readerTheme === 'amoled' && (
+              <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px' }}>
+                <circle cx="12" cy="12" r="9" opacity="0.3"></circle>
+                <path d="M12 3a9 9 0 1 0 9 9 9.75 9.75 0 0 0-.67-3.41L18 12a6 6 0 1 1-6-6 5.86 5.86 0 0 1 3.41.67L12 3z"></path>
+              </svg>
+            )}
+            {readerTheme === 'sepia' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px' }}>
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+              </svg>
+            )}
+            {readerTheme === 'light' && (
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px' }}>
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+            )}
           </button>
 
           {/* Brightness Dimmer */}
@@ -461,9 +504,19 @@ export default function Reader({ seriesId, chapterId, chapterTitle, images, chap
             onClick={cycleBrightness} 
             className="reader-btn"
             title={`Brightness: ${brightness}%`}
-            style={{ fontSize: '1rem', borderColor: 'var(--border)', color: brightness < 100 ? 'var(--primary)' : 'var(--text-primary)' }}
+            style={{ fontSize: '1rem', borderColor: 'var(--border)', color: brightness < 100 ? 'var(--primary)' : 'var(--text-primary)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
           >
-            🔆
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px' }}>
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
           </button>
           
           {/* Mode Switcher */}

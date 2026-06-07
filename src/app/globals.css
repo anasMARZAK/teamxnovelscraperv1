@@ -870,3 +870,231 @@ html, body {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(122, 34, 255, 0.15);
 }
+
+/* ===== Premium UI/UX Redesign Upgrades ===== */
+
+/* Placeholder Contrast Upgrade */
+::placeholder {
+  color: #94a3b8 !important; /* Slate-400 for high-contrast visible placeholders */
+  opacity: 1; /* Firefox fix */
+}
+:-ms-input-placeholder {
+  color: #94a3b8 !important;
+}
+::-ms-input-placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Inline Input Icon Wrappers */
+.input-icon-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon-container input {
+  padding-left: 2.75rem !important; /* Reserve left offset for inline SVG icon */
+}
+
+.input-icon-container .input-icon {
+  position: absolute;
+  left: 1rem;
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: var(--transition);
+}
+
+/* Accentuate icon colors when corresponding inputs are active */
+.input-icon-container input:focus + .input-icon {
+  color: var(--primary);
+}
+
+.scrape-box .input-icon-container input:focus + .input-icon {
+  color: var(--accent);
+}
+
+/* Scraper Control Center (Import Card) */
+.import-card {
+  background: linear-gradient(135deg, rgba(18, 22, 31, 0.6) 0%, rgba(27, 33, 47, 0.65) 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.import-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.scrape-form-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+}
+
+.scrape-form-row .input-icon-container {
+  flex: 1;
+}
+
+@media (max-width: 900px) {
+  .scrape-form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .provider-select {
+    width: 100%;
+  }
+  .scrape-form-row .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Premium Switch Toggle for Force Overwrite */
+.custom-checkbox-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+  margin-top: 1.25rem;
+  width: fit-content;
+}
+
+.custom-checkbox-container input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.custom-checkbox {
+  position: relative;
+  width: 44px;
+  height: 22px;
+  background-color: var(--border);
+  border-radius: 22px;
+  transition: var(--transition);
+  border: 1px solid var(--glass-border);
+}
+
+.custom-checkbox::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--text-secondary);
+  transition: var(--transition);
+}
+
+.custom-checkbox-container input[type="checkbox"]:checked + .custom-checkbox {
+  background-color: var(--primary);
+  box-shadow: 0 0 10px rgba(255, 74, 125, 0.3);
+}
+
+.custom-checkbox-container input[type="checkbox"]:checked + .custom-checkbox::after {
+  left: 24px;
+  background-color: #ffffff;
+}
+
+.custom-checkbox-container:hover .custom-checkbox::after {
+  background-color: var(--text-primary);
+}
+
+.custom-checkbox-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  transition: var(--transition);
+}
+
+.custom-checkbox-container input[type="checkbox"]:checked ~ .custom-checkbox-label {
+  color: var(--text-primary);
+}
+
+/* Hero Section Split Layout & Artwork */
+.hero-container {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 2rem;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-artwork {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.hero-artwork svg {
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0 30px rgba(255, 74, 125, 0.25));
+  animation: float-artwork 5s ease-in-out infinite;
+}
+
+@keyframes float-artwork {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (max-width: 800px) {
+  .hero-container {
+    grid-template-columns: 1fr;
+  }
+  .hero-artwork {
+    display: none; /* Hide artwork on mobile to optimize screen real estate */
+  }
+}
+
+/* Library Layout Adjustments */
+.library-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.library-header-row h2 {
+  margin-bottom: 0 !important;
+}
+
+.library-header-row .search-box {
+  min-width: 350px;
+}
+
+@media (max-width: 640px) {
+  .library-header-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .library-header-row .search-box {
+    width: 100%;
+    min-width: 0;
+  }
+}
+

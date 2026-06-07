@@ -164,7 +164,13 @@ export default function DashboardClient({ initialCatalog }: DashboardClientProps
         <div className="hud-overlay">
           <div className="hud-panel glass">
             <div className="hud-header">
-              <h3>🔬 Scraper Console</h3>
+              <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '18px', height: '18px', color: 'var(--primary)' }}>
+                  <polyline points="4 17 10 11 4 5" />
+                  <line x1="12" y1="19" x2="20" y2="19" />
+                </svg>
+                Scraper Console
+              </h3>
               <div className="hud-stats">
                 <span className="hud-stat">Provider: <strong>{jobStatus?.provider || provider}</strong></span>
                 <span className="hud-stat">Pass: <strong>{jobStatus?.currentPass || 0}/{jobStatus?.maxPasses || 3}</strong></span>
@@ -191,7 +197,10 @@ export default function DashboardClient({ initialCatalog }: DashboardClientProps
                   }}
                   title={jobStatus?.status === 'running' ? "Minimize to background" : "Close console"}
                 >
-                  ✕
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '14px', height: '14px' }}>
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
                 </button>
               </div>
             </div>
@@ -219,10 +228,40 @@ export default function DashboardClient({ initialCatalog }: DashboardClientProps
             {/* Status Badge */}
             <div className="hud-footer">
               <span className={`hud-status-badge hud-status-${jobStatus?.status || 'idle'}`}>
-                {jobStatus?.status === 'running' && '⚡ Running'}
-                {jobStatus?.status === 'completed' && '✅ Completed'}
-                {jobStatus?.status === 'failed' && '❌ Failed'}
-                {(!jobStatus || jobStatus?.status === 'idle') && '⏳ Initializing...'}
+                {jobStatus?.status === 'running' && (
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '14px', height: '14px', color: 'var(--primary)' }}>
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    Running
+                  </span>
+                )}
+                {jobStatus?.status === 'completed' && (
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '14px', height: '14px', color: 'var(--success)' }}>
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Completed
+                  </span>
+                )}
+                {jobStatus?.status === 'failed' && (
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '14px', height: '14px', color: '#ef4444' }}>
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="15" y1="9" x2="9" y2="15"></line>
+                      <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                    Failed
+                  </span>
+                )}
+                {(!jobStatus || jobStatus?.status === 'idle') && (
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: '14px', height: '14px', color: '#f59e0b', animation: 'spin 1.5s linear infinite' }}>
+                      <circle cx="12" cy="12" r="10" strokeDasharray="30 10"></circle>
+                    </svg>
+                    Initializing...
+                  </span>
+                )}
               </span>
             </div>
           </div>
@@ -232,7 +271,18 @@ export default function DashboardClient({ initialCatalog }: DashboardClientProps
       {/* Navbar */}
       <nav className="navbar glass">
         <div className="logo">
-          <span>🌌</span> Neo Manga Reader
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '22px', height: '22px', stroke: 'url(#logo-grad)' }}>
+            <defs>
+              <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="var(--primary)" />
+                <stop offset="100%" stopColor="var(--accent)" />
+              </linearGradient>
+            </defs>
+            <circle cx="12" cy="12" r="3" fill="url(#logo-grad)"></circle>
+            <path d="M3 12a9 9 0 0 1 15-6.7M21 12a9 9 0 0 1-15 6.7"></path>
+            <ellipse cx="12" cy="12" rx="9" ry="3" transform="rotate(-30 12 12)"></ellipse>
+          </svg>
+          <span>Neo Manga Reader</span>
         </div>
         <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
           Powered by Firecrawl MCP
@@ -242,36 +292,69 @@ export default function DashboardClient({ initialCatalog }: DashboardClientProps
       <div className="container">
         {/* Hero Section */}
         <header className="hero">
-          <h1>Your Personal Manga Workspace</h1>
-          <p>
-            An ad-free, high-performance manga and manhwa reader. Input a series landing page from supported scanlation sites to index chapters instantly.
-          </p>
+          <div className="hero-container">
+            <div className="hero-content">
+              <h1>Your Personal Manga Workspace</h1>
+              <p>
+                An ad-free, high-performance manga and manhwa reader. Input a series landing page from supported scanlation sites to index chapters instantly.
+              </p>
+            </div>
+            <div className="hero-artwork">
+              <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                {/* Abstract grid network */}
+                <rect x="15" y="15" width="170" height="170" rx="12" stroke="rgba(255, 74, 125, 0.12)" strokeWidth="1.5" />
+                <rect x="35" y="35" width="130" height="130" rx="8" stroke="rgba(122, 34, 255, 0.15)" strokeWidth="1.5" />
+                <circle cx="100" cy="100" r="50" stroke="rgba(255, 74, 125, 0.15)" strokeWidth="1" strokeDasharray="3 3" />
+                
+                {/* Diagonal lines */}
+                <line x1="15" y1="15" x2="185" y2="185" stroke="url(#hero-art-grad)" strokeWidth="1" strokeDasharray="5 5" />
+                <line x1="185" y1="15" x2="15" y2="185" stroke="url(#hero-art-grad)" strokeWidth="1" strokeDasharray="5 5" />
+                
+                {/* Inner decorative shapes */}
+                <rect x="75" y="75" width="50" height="50" rx="6" fill="rgba(18, 22, 31, 0.65)" stroke="url(#hero-art-grad)" strokeWidth="2" />
+                <circle cx="100" cy="100" r="12" fill="none" stroke="url(#hero-art-grad)" strokeWidth="1.5" />
+                <circle cx="100" cy="100" r="5" fill="var(--primary)" />
+                
+                {/* Visual anchor point crosses */}
+                <path d="M15 100h10M175 100h10M100 15v10M100 175v10" stroke="rgba(122, 34, 255, 0.4)" strokeWidth="1.5" />
+                
+                <defs>
+                  <linearGradient id="hero-art-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="var(--primary)" />
+                    <stop offset="100%" stopColor="var(--accent)" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
         </header>
 
-        {/* Controls Row */}
-        <section className="controls-row">
-          {/* Search Box */}
-          <div className="search-box">
-            <input
-              type="text"
-              placeholder="Search library..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-
-          {/* Scraper Trigger */}
-          <form className="scrape-box" onSubmit={handleScrapeSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-            <div style={{ display: 'flex', gap: '0.75rem', width: '100%' }}>
-              <input
-                type="url"
-                placeholder="Paste series URL (e.g., https://olympustaff.com/series/release-that-witch/)"
-                value={scrapeUrl}
-                onChange={(e) => setScrapeUrl(e.target.value)}
-                disabled={isScraping}
-                required
-                style={{ flexGrow: 1 }}
-              />
+        {/* Scraper Control Center */}
+        <section className="import-card">
+          <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ width: '18px', height: '18px', color: 'var(--primary)' }}>
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            Import Series
+          </h3>
+          <form className="scrape-box" onSubmit={handleScrapeSubmit} style={{ display: 'block' }}>
+            <div className="scrape-form-row">
+              <div className="input-icon-container">
+                <input
+                  type="url"
+                  placeholder="Paste series URL (e.g., https://olympustaff.com/series/tcf/)"
+                  value={scrapeUrl}
+                  onChange={(e) => setScrapeUrl(e.target.value)}
+                  disabled={isScraping}
+                  required
+                />
+                <svg className="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+              </div>
               <select
                 className="provider-select"
                 value={provider}
@@ -285,25 +368,40 @@ export default function DashboardClient({ initialCatalog }: DashboardClientProps
                 {isScraping ? 'Indexing...' : 'Index Series'}
               </button>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', alignSelf: 'flex-start', paddingLeft: '0.25rem' }}>
+            
+            {/* Custom Styled Switch for Overwrite */}
+            <label className="custom-checkbox-container">
               <input
                 type="checkbox"
-                id="overwrite"
                 checked={overwrite}
                 onChange={(e) => setOverwrite(e.target.checked)}
                 disabled={isScraping}
-                style={{ cursor: 'pointer', width: '16px', height: '16px' }}
               />
-              <label htmlFor="overwrite" style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', cursor: 'pointer', userSelect: 'none' }}>
+              <div className="custom-checkbox"></div>
+              <span className="custom-checkbox-label">
                 Force Overwrite / Refresh Existing Chapters
-              </label>
-            </div>
+              </span>
+            </label>
           </form>
         </section>
 
         {/* Manga Library Listing */}
         <main>
-          <h2 style={{ marginBottom: '1.5rem', fontWeight: 700, fontSize: '1.5rem' }}>Your Library</h2>
+          <div className="library-header-row">
+            <h2 style={{ fontWeight: 700, fontSize: '1.5rem' }}>Your Library</h2>
+            <div className="search-box input-icon-container">
+              <input
+                type="text"
+                placeholder="Search library..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <svg className="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+          </div>
           
           {filteredManga.length === 0 ? (
             <div style={{ 
