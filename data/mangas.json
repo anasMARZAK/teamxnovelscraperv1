@@ -11650,6 +11650,15 @@
     "coverUrl": "https://olympustaff.com/images/TeamX.png",
     "chapters": [
       {
+        "id": "chapter-0",
+        "title": "Chapter 0",
+        "url": "https://olympustaff.com/series/the-demon-kings-champion/0",
+        "images": [
+          "https://olympustaff.com/images/TeamX.png",
+          "https://olympustaff.com/assets/images/404.png"
+        ]
+      },
+      {
         "id": "chapter-1",
         "title": "Chapter 1",
         "url": "https://olympustaff.com/series/the-demon-kings-champion/1",

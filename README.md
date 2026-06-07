@@ -79,7 +79,17 @@ graph TD
 
 ## 🖥️ Running the Application
 
-### 1. Start the Dev Server
+### 🚀 Easy Launch (Windows Only)
+Simply double-click the **`start-hub.bat`** file in the root directory! This opens an interactive terminal management console that lets you:
+1. **Launch the Web App in Dev Mode** (automatically installs dependencies and opens the browser).
+2. **Build & Launch in Production Mode** (runs Next.js production build and starts the server).
+3. **Run CLI Scraper** (prompts you for the series URL and chapter limit interactively).
+4. **Clear Database Locks** (deletes stale locks in one click).
+5. **Clean Install Dependencies** (wipes node_modules and re-runs npm install).
+
+---
+
+### 1. Manual Dev Server Launch
 Launch the Next.js frontend application:
 ```bash
 npm run dev
