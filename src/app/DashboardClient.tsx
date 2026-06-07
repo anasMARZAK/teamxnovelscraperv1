@@ -437,6 +437,7 @@ export default function DashboardClient({ initialCatalog }: DashboardClientProps
                           unoptimized={true}
                           priority={index < 4}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          style={{ objectFit: 'cover' }}
                         />
                         {chapterCount > 0 && (
                           <div className="card-badge">
